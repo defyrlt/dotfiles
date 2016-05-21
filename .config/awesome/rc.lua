@@ -1,5 +1,4 @@
 -- Standard awesome library
-vicious = require("vicious")
 require("awful")
 require("awful.autofocus")
 require("awful.rules")
@@ -10,7 +9,6 @@ require("naughty")
 
 -- Load Debian menu entries
 require("debian.menu")
-
 
 -- {{{ Error handling
 -- Check if awesome encountered an error during startup and fell back to
@@ -42,8 +40,8 @@ end
 beautiful.init("/usr/share/awesome/themes/default/theme.lua")
 
 -- This is used later as the default terminal and editor to run.
-terminal = "xterm"
-editor = os.getenv("EDITOR") or "nano"
+terminal = "x-terminal-emulator"
+editor = os.getenv("EDITOR") or "editor"
 editor_cmd = terminal .. " -e " .. editor
 
 -- Default modkey.
@@ -76,7 +74,7 @@ layouts =
 tags = {}
 for s = 1, screen.count() do
     -- Each screen has its own tag table.
-    tags[s] = awful.tag({ 1, 2, 3, 4, 5, 6, }, s, layouts[1])
+    tags[s] = awful.tag({ 1, 2, 3, 4, 5, 6, 7, 8, 9 }, s, layouts[1])
 end
 -- }}}
 
@@ -151,13 +149,6 @@ mytasklist.buttons = awful.util.table.join(
                                               if client.focus then client.focus:raise() end
                                           end))
 
--- Initialize widget
-memwidget = widget({ type = "textbox" })
--- Register widget
-vicious.register(memwidget, vicious.widgets.mem, "$1% ($2MB/$3MB)", 13)
-
-bat = widget({ type = "textbox" })
-
 for s = 1, screen.count() do
     -- Create a promptbox for each screen
     mypromptbox[s] = awful.widget.prompt({ layout = awful.widget.layout.horizontal.leftright })
@@ -190,10 +181,6 @@ for s = 1, screen.count() do
         mylayoutbox[s],
         mytextclock,
         s == 1 and mysystray or nil,
-        battwidget,
-        bat,
-        -- memwidget,
-        -- batwidget,
         mytasklist[s],
         layout = awful.widget.layout.horizontal.rightleft
     }
@@ -287,14 +274,9 @@ clientkeys = awful.util.table.join(
             c.maximized_horizontal = not c.maximized_horizontal
             c.maximized_vertical   = not c.maximized_vertical
         end),
-    -- awful.key({ "Caps" }, "1", function () awful.util.spawn('setxkbmap us') end),
-    -- awful.key({ "Caps" }, "2", function () awful.util.spawn('setxkbmap ru,us') end),
-    -- awful.key({ "Caps" }, "3", function () awful.util.spawn('setxkbmap ua,us') end),
-    awful.key({ "Control" }, "F10", function () awful.util.spawn("amixer set Master toggle") end),
-    awful.key({ "Control" }, "F11", function () awful.util.spawn("amixer -c 0 set Master 2-") end),
-    awful.key({ "Control" }, "F12", function () awful.util.spawn("amixer -c 0 set Master 2+") end),
-    awful.key({ "Control", "Shift" }, "F7", function () awful.util.spawn("xscreensaver-command -lock") end),
-    awful.key({ "Control", "Shift" }, "Insert", function () awful.util.spawn("xdotool click 2") end)
+    awful.key({ "Control" }, "F10", function () awful.util.spawn("amixer -D pulse sset Master toggle &") end),
+    awful.key({ "Control" }, "F11", function () awful.util.spawn("amixer -D pulse sset Master 3%- &") end),
+    awful.key({ "Control" }, "F12", function () awful.util.spawn("amixer -D pulse sset Master 3%+ &") end)
 )
 
 -- Compute the maximum number of digit we need, limited to 9
@@ -361,14 +343,8 @@ awful.rules.rules = {
     { rule = { class = "gimp" },
       properties = { floating = true } },
     -- Set Firefox to always map on tags number 2 of screen 1.
-    { rule = { class = "Firefox" },
-      properties = { tag = tags[1][1] } },
-    { rule = { class = "Google-chrome" },
-	  properties = { floating = false, tag = tags[1][1] } },
-    { rule = { class = "Pidgin" },
-	  properties = { tag = tags[1][3] } },
-    { rule = { class = "Skype" },
-        properties = { tag = tags[1][3] } },
+    -- { rule = { class = "Firefox" },
+    --   properties = { tag = tags[1][2] } },
 }
 -- }}}
 
@@ -402,10 +378,5 @@ end)
 client.add_signal("focus", function(c) c.border_color = beautiful.border_focus end)
 client.add_signal("unfocus", function(c) c.border_color = beautiful.border_normal end)
 -- }}}
--- awful.util.spawn_with_shell("xbacklight -set 60")
--- awful.util.spawn_with_shell("xscreensaver -nosplash")
--- awful.util.spawn_with_shell("run_once nm-applet")
--- awful.util.spawn_with_shell("setxkbmap us,ru variant grp:caps_toggle")
--- awful.util.spawn_with_shell("/home/user/scripts/touch.py")
--- awful.util.spawn_with_shell('run_once bat')
--- awful.util.spawn_with_shell('run_once xflux -l 50')
+--
+awful.util.spawn_with_shell("setxkbmap -layout 'us,ua' -option grp:caps_toggle -option grp_led:scroll")
