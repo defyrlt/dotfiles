@@ -5,13 +5,14 @@ set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#begin()
 
 Plugin 'gmarik/Vundle.vim'
-Plugin 'bling/vim-airline'
+Plugin 'vim-airline/vim-airline'
+Plugin 'vim-airline/vim-airline-themes'
 " Plugin 'klen/python-mode'
 Plugin 'scrooloose/nerdtree'
 Plugin 'kien/ctrlp.vim'
 Plugin 'airblade/vim-gitgutter'
 Plugin 'tpope/vim-fugitive'
-Plugin 'davidhalter/jedi-vim' 
+" Plugin 'davidhalter/jedi-vim' 
 Plugin 'szw/vim-tags'
 Plugin 'majutsushi/tagbar'
 Plugin 'mattn/emmet-vim'
@@ -19,6 +20,8 @@ Plugin 'nvie/vim-flake8'
 Plugin 'tell-k/vim-autopep8'
 Plugin 'hynek/vim-python-pep8-indent'
 Plugin 'wting/rust.vim'
+Plugin 'valloric/YouCompleteMe'
+Plugin 'jmcantrell/vim-virtualenv'
 
 call vundle#end()
 filetype plugin indent on
@@ -82,6 +85,7 @@ let g:gitgutter_max_signs = 1000
 
 map <F2> :NERDTreeToggle<CR>
 " map <C-S-F8> :PymodeLintAuto<CR>
+map <leader>d :YcmCompleter GoTo<CR>
 
 nmap <F3> :TagbarToggle<CR>
 
@@ -103,18 +107,21 @@ nnoremap <leader>b oimport ipdb; ipdb.set_trace()<ESC>
 nnoremap <F4> :set hlsearch! hlsearch?<CR>
 " nnoremap <leader>hl :set hlsearch<CR>
 " nnoremap <leader>nh :set nohlsearch<CR>
-"
-autocmd BufEnter fabfile_settings.py nnoremap <leader>devc :11,19s/^/#<CR>
-autocmd BufEnter fabfile_settings.py nnoremap <leader>devC :11,19s/^#//<CR>
-
-autocmd BufEnter fabfile_settings.py nnoremap <leader>prodc :21,29s/^/#<CR>
-autocmd BufEnter fabfile_settings.py nnoremap <leader>prodC :21,29s/^#//<CR>
-
-autocmd BufEnter fabfile_settings.py nnoremap <leader>newc :31,39s/^/#<CR>
-autocmd BufEnter fabfile_settings.py nnoremap <leader>newC :31,39s/^#//<CR>
+nnoremap <leader>f :vimgrep "" **/*.py<left><left><left><left><left><left><left><left><left>
+nnoremap <leader>cw :cwindow<CR>
 
 vnoremap <C-r> "hy:%s/<C-r>h//gc<left><left><left>
 vnoremap <leader>c I# <ESC><ESC>
 vnoremap <leader>C lx
+
+"python with virtualenv support
+py << EOF
+import os
+import sys
+if 'VIRTUAL_ENV' in os.environ:
+  project_base_dir = os.environ['VIRTUAL_ENV']
+  activate_this = os.path.join(project_base_dir, 'bin/activate_this.py')
+  execfile(activate_this, dict(__file__=activate_this))
+EOF
 
 syntax on
