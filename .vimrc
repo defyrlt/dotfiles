@@ -86,8 +86,7 @@ let g:gitgutter_max_signs = 1000
 map <F2> :NERDTreeToggle<CR>
 " map <C-S-F8> :PymodeLintAuto<CR>
 map <leader>d :YcmCompleter GoTo<CR>
-
-nmap <F3> :TagbarToggle<CR>
+map <leader>sf yw:vimgrep "<C-R>"" **/*.py
 
 noremap <Leader>gs :Gstatus<CR>
 noremap <Leader>gb :Gblame<CR>
@@ -108,6 +107,7 @@ nnoremap <F4> :set hlsearch! hlsearch?<CR>
 " nnoremap <leader>hl :set hlsearch<CR>
 " nnoremap <leader>nh :set nohlsearch<CR>
 nnoremap <leader>f :vimgrep "" **/*.py<left><left><left><left><left><left><left><left><left>
+nnoremap <F3> :TagbarToggle<CR>
 nnoremap <leader>cw :cwindow<CR>
 
 vnoremap <C-r> "hy:%s/<C-r>h//gc<left><left><left>
