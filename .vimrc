@@ -22,6 +22,7 @@ Plugin 'hynek/vim-python-pep8-indent'
 Plugin 'wting/rust.vim'
 Plugin 'valloric/YouCompleteMe'
 Plugin 'jmcantrell/vim-virtualenv'
+Plugin 'kchmck/vim-coffee-script'
 
 call vundle#end()
 filetype plugin indent on
